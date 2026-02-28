@@ -31,13 +31,22 @@ header h1 {
 .search-box {   
     border: 5px solid white;
     border-radius: 5px;
+    padding: 8px;
+    max-width: 600px;
     width: 100%;
-    height: 100%;
     margin-bottom: 1rem;
+    box-sizing: border-box;
+    font-size: 1rem;
 }
 
 .patients {
     border: 3px solid hotpink;
+    padding: 15px;
     width: 100%;
     height: 100%;
+}
+
+.patients * {
+    padding: 0;
+    margin: 0;
 }
