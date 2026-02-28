@@ -12,8 +12,9 @@ export default function IndexPage() {
       <section className="info-center">
 
         <input className="search-box" type="search" placeholder="Search For A Patient" />
+
         <div className="patients">
-          
+          <p>Tony Stark</p>
         </div>
 
       </section>
