@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/index-page.css";
 
-const GET_ALL_USERS_URL = "";
-
 export default function IndexPage() { 
+  const [searchTerm, setSearchTerm] = useState(""); // track search input
 
   const patients = [
     { id: 1, name: "John Doe" },
@@ -12,31 +11,44 @@ export default function IndexPage() {
     { id: 4, name: "Bob Brown" },
   ];
 
+  // Filter patients based on search term (case-insensitive)
+  const filteredPatients = patients.filter((patient) =>
+    patient.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="page-wrapper">
-
       <header>
         <h1>Medical Jawn</h1>
       </header>
 
       <section className="info-center">
-
-        <input className="search-box" type="search" placeholder="Search For A Patient" />
+        <input
+          className="search-box"
+          type="search"
+          placeholder="Search For A Patient"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
 
         <div className="patients-list">
-          {patients.map((patient) => (
-            <a
-              key={patient.id}
-              href={`/patients/${patient.name}`}
-              className="patient-link"
-            >
-              {patient.name}
-            </a>
-          ))}
+          {filteredPatients.length > 0 ? (
+            filteredPatients.map((patient) => (
+              <a
+                key={patient.id}
+                href={`/patients/${patient.name}`}
+                className="patient-link"
+              >
+                {patient.name}
+              </a>
+            ))
+          ) : (
+            <p style={{ color: "#00c8ff", padding: "12px" }}>
+              No patients found.
+            </p>
+          )}
         </div>
-
       </section>
-
     </div>
   );
 }
