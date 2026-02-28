@@ -46,7 +46,7 @@ export default function PatientPage() {
         <p><strong>Condition:</strong> {patient.condition}</p>
       </section>
 
-      <Link to="/" className="back-link">← Back to Home</Link>
+      <Link to="/" className="back-link">Back to Home</Link>
     </div>
   );
 }
