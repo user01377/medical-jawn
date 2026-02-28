@@ -10,7 +10,12 @@ export default function IndexPage() {
       </header>
 
       <section className="info-center">
+
         <input className="search-box" type="search" placeholder="Search For A Patient" />
+        <div className="patients">
+          
+        </div>
+
       </section>
 
     </div>
