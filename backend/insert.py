@@ -24,9 +24,6 @@ def update_patient(user_id, systolic, diastolic, date):
     conn = sqlite3.connect('users.sqlite')
 
     try:
-        #cursor.execute('SELECT user_id FROM patient WHERE user_id = ?', (user_id,))
-
-
         add_blood_pressure(user_id, systolic, diastolic, date)
     except Exception as e:
         print(f'except: {e}')
@@ -47,7 +44,7 @@ def main():
             user_id=1,
             systolic=int(sys[i]),
             diastolic=int(dia[i]),
-            date='2020-3-21'
+            date=f'{year+1}-3-21'
         )
     add_patient(name='Vindent', age=67, weight=10, height=80)
     for i in range(len(sys)):
@@ -55,7 +52,7 @@ def main():
             user_id=2,
             systolic=int(sys[i]),
             diastolic=int(dia[i]),
-            date=f'{year+i}-3-21'
+            date=f'{year+i}-6-21'
         )
     add_patient(name='Sigma Ryan', age=5000, weight=1830, height=6767)
     for i in range(len(sys)):
@@ -63,7 +60,7 @@ def main():
             user_id=3,
             systolic=int(sys[i]),
             diastolic=int(dia[i]),
-            date=f'{year-i}-3-21'
+            date=f'{year-i}-8-21'
         )
         
 if __name__ == "__main__":
