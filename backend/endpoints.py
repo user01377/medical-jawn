@@ -25,7 +25,7 @@ def get_bloodpressure(user_id):
 
     try:
         query = '''
-        SELECT systolic, diastolic
+        SELECT systolic, diastolic, date
         FROM blood_pressure
         WHERE user_id = ?
         '''
@@ -45,7 +45,6 @@ def main():
     row = get_db_row(1, 'blood_pressure' ,'blood.sqlite')
 
     if row:
-        
         print(row)
     else:
         print("No blood pressure record found.")

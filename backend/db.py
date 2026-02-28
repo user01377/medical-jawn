@@ -29,13 +29,14 @@ cursor.execute('''
     CREATE TABLE IF NOT EXISTS blood.blood_pressure (
         user_id INTEGER,
         systolic INTEGER NOT NULL,
-        diastolic INTEGER NOT NULL
+        diastolic INTEGER NOT NULL,
+        date TEXT NOT NULL
     )
 ''')
 
 cursor.execute("""
-    INSERT OR IGNORE INTO blood.blood_pressure (user_id, systolic, diastolic)
-    VALUES (1, 120, 80)
+    INSERT OR IGNORE INTO blood.blood_pressure (user_id, systolic, diastolic, date)
+    VALUES (1, 120, 80, '2020-01-12')
 """)
 
 conn.commit()
