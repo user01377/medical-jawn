@@ -9,6 +9,7 @@ def get_db_row(id, subtable, db_path):
         query =  cur.execute('SELECT * FROM db_path WHERE id = ?')
         return query
     except:
+        print('invalid db query or connection failed.')
         return []
     finally:
         if con:
