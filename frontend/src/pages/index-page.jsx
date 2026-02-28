@@ -1,7 +1,9 @@
 import React from "react";
 import "../styles/index-page.css";
 
-export default function IndexPage() {
+const API_URL = "URL_FOR_PATIENT_LISaawsaaQ TING_HERE";
+
+export default function IndexPage() { 
   return (
     <div className="page-wrapper">
 
@@ -14,7 +16,7 @@ export default function IndexPage() {
         <input className="search-box" type="search" placeholder="Search For A Patient" />
 
         <div className="patients">
-          <p>Tony Stark</p>
+  
         </div>
 
       </section>
