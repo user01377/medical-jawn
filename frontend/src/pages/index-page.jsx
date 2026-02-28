@@ -1,9 +1,13 @@
+import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import "../styles/index-page.css";
 
-export default function IndexPage() { 
-  const [searchTerm, setSearchTerm] = useState(""); // track search input
+const GET_ALL_PATIENTS_URL = "";
 
+export default function IndexPage() { 
+  const [searchTerm, setSearchTerm] = useState("");
+  
+  // hard coded the patient list on the home page
   const patients = [
     { id: 1, name: "John Doe" },
     { id: 2, name: "Jane Smith" },
@@ -34,13 +38,13 @@ export default function IndexPage() {
         <div className="patients-list">
           {filteredPatients.length > 0 ? (
             filteredPatients.map((patient) => (
-              <a
+              <Link
                 key={patient.id}
-                href={`/patients/${patient.name}`}
+                to={`/patients/${patient.id}`}
                 className="patient-link"
               >
                 {patient.name}
-              </a>
+              </Link>
             ))
           ) : (
             <p style={{ color: "#00c8ff", padding: "12px" }}>
