@@ -43,7 +43,7 @@ def get_bloodpressure(user_id):
         WHERE user_id = ?
         '''
         cur.execute(query, (user_id,))
-        row = cur.fetchone()
+        row = cur.fetchall()
         return row
 
     except sqlite3.Error as e:
@@ -58,7 +58,7 @@ def get_systolic(user_id):
     con = sqlite3.connect('blood.sqlite')
     cur = con.cursor()
 
-    systolic = {}
+    systolic = dict()
 
     try:
         query = '''
@@ -73,7 +73,7 @@ def get_systolic(user_id):
         for date, sys_val in rows:
             systolic[date] = sys_val
 
-        return  json.dumps(systolic)
+        return json.dumps(systolic)
 
     except sqlite3.Error as e:
         print("Failed to get blood pressure:", e)
@@ -127,9 +127,7 @@ def get_diastolic_avg(user_id):
 
 def main():
     #print(get_systolic(1))
-    #print(get_bloodpressure(1))
-
-    get_all_patients()
+    print(get_systolic(2))
 
 
 if __name__ == '__main__':
