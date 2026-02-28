@@ -24,9 +24,6 @@ def update_patient(user_id, systolic, diastolic, date):
     conn = sqlite3.connect('users.sqlite')
 
     try:
-        #cursor.execute('SELECT user_id FROM patient WHERE user_id = ?', (user_id,))
-
-
         add_blood_pressure(user_id, systolic, diastolic, date)
     except Exception as e:
         print(f'except: {e}')
