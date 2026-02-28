@@ -1,34 +1,55 @@
-import numpy as np
 import sqlite3
 
 
-# Returns tuple containing data for specific row in a db table
-def get_db_row(id, subtable, db_path):
+def get_db_row(user_id, table, db_path):
     con = sqlite3.connect(db_path)
     cur = con.cursor()
 
     try:
-        query =  cur.execute('SELECT * FROM db_path WHERE id = ?')
-        return query
-    except:
-        print('invalid db query or connection failed.')
-        return []
-    finally:
-        if con:
-            con.close()
+        query = f"SELECT * FROM {table} WHERE user_id = ?"
+        cur.execute(query, (user_id,))
+        row = cur.fetchone()
+        return row
 
-def get_bloodpressure(id, subtable):
-    con = sqlite3.connect('blood.blood_pressure')
+    except sqlite3.Error as e:
+        print("Invalid DB query or connection failed:", e)
+        return None
+
+    finally:
+        con.close()
+
+
+def get_bloodpressure(user_id):
+    con = sqlite3.connect('blood.sqlite')
     cur = con.cursor()
 
     try:
-        dia = cur.execute('SELECT blood.blood_pressure.diastolic')
-        sys = cur.execute('SELECT blood.blood_pressure.systolic')
-        print(dia)
-        print(sys)
-    except:
-        print('failed to get bloodpressure')
-        return []
+        query = '''
+        SELECT systolic, diastolic
+        FROM blood_pressure
+        WHERE user_id = ?
+        '''
+        cur.execute(query, (user_id,))
+        row = cur.fetchone()
+        return row
+
+    except sqlite3.Error as e:
+        print("Failed to get blood pressure:", e)
+        return None
+
     finally:
-        if con:
-            con.close()
+        con.close()
+
+
+def main():
+    row = get_db_row(1, 'blood_pressure' ,'blood.sqlite')
+
+    if row:
+        
+        print(row)
+    else:
+        print("No blood pressure record found.")
+
+
+if __name__ == '__main__':
+    main()
