@@ -1,9 +1,18 @@
 import React from "react";
+import "../styles/index-page.css";
 
-export default function indexPage() {
+export default function IndexPage() {
   return (
-    <div>
-      <h1>HELLO WORLD</h1>
+    <div className="page-wrapper">
+
+      <header>
+        <h1>Medical Jawn</h1>
+      </header>
+
+      <section className="info-center">
+        <input className="search-box" type="search" placeholder="Search For A Patient" />
+      </section>
+
     </div>
   );
 }

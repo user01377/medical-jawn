@@ -1,11 +1,8 @@
 import './styles/App.css'
-import indexPage from './components/index-page';
+import IndexPage from './components/index-page';
 
 function App() {
-
-  return (
-    indexPage()
-  )
+  return <IndexPage />;
 }
 
 export default App

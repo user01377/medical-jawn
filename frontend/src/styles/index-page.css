@@ -1,0 +1,21 @@
+.page-wrapper {
+    display: grid;
+    place-items: center; /* cleaner shorthand */
+}
+
+h1 {
+    text-align: center;
+    margin: 0;
+    padding: 5px;
+}
+
+.info-center {
+    margin: 0;
+    padding: 0;
+}
+
+.search-box {   
+    border: 5px solid white;
+    border-radius: 5px;
+    padding: 5px;
+}
