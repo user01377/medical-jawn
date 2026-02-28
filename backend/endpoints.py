@@ -87,7 +87,7 @@ def get_diastolic(user_id):
     con = sqlite3.connect('blood.sqlite')
     cur = con.cursor()
 
-    systolic = {}
+    systolic = dict()
 
     try:
         query = '''
@@ -126,8 +126,8 @@ def get_diastolic_avg(user_id):
     return np.mean(vals)
 
 def main():
-    #print(get_systolic(1))
-    print(get_systolic(2))
+    print(get_diastolic(2))
+    print(get_diastolic_avg(2))
 
 
 if __name__ == '__main__':
