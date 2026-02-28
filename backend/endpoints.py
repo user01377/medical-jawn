@@ -1,7 +1,8 @@
 import sqlite3
 import json
+import numpy as np
 
-
+# returns tuple of a full row in database
 def get_db_row(user_id, table, db_path):
     con = sqlite3.connect(db_path)
     cur = con.cursor()
@@ -19,7 +20,18 @@ def get_db_row(user_id, table, db_path):
     finally:
         con.close()
 
+# returns user IDs and names
+def get_all_patients():
+    con = sqlite3.connect('users.sqlite')
+    cur = con.cursor()
 
+    cur.execute('SELECT user_id, name FROM patient')
+    print(cur.fetchall())
+
+    con.close()
+
+
+# returns all bloodpressure data of patient
 def get_bloodpressure(user_id):
     con = sqlite3.connect('blood.sqlite')
     cur = con.cursor()
@@ -99,11 +111,25 @@ def get_diastolic(user_id):
     finally:
         con.close()
 
+# returns the average of a patients systolic levels
+def get_systolic_avg(user_id):
+    sys = json.loads(get_systolic(user_id))
+
+    vals = np.array(sorted(dict.values(sys)))
+    return np.mean(vals)
+
+# returns the average of a patients diastolic levels
+def get_diastolic_avg(user_id):
+    dia = json.loads(get_diastolic(user_id))
+
+    vals = np.array(sorted(dict.values(dia)))
+    return np.mean(vals)
+
 def main():
-    bp_s = get_systolic(1)
-    bp_d = get_diastolic(1)
-    print(bp_s)
-    print(bp_d)
+    #print(get_systolic(1))
+    #print(get_bloodpressure(1))
+
+    get_all_patients()
 
 
 if __name__ == '__main__':
