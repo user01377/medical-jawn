@@ -6,6 +6,15 @@ import json
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:5173"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins
+)
+
 @app.get("/all-patients")
 def read_all_patients():
     return endpoints.get_all_patients()
