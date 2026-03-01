@@ -5,43 +5,23 @@ import {
   Tooltip, ReferenceLine, ResponsiveContainer,
 } from "recharts";
 
-const GET_SYS_DATA = "http://127.0.0.1:8000/get-patient-sys-data/";
-
-export default function SystolicGraph() {
-  const { patientURL } = useParams();
-  const patientID = patientURL.split("-")[0];
-  // console.log(patientID); // debugging
+export default function ReusableGraph({patientID, apiURL, config}) {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const config = {
-    title: "Systolic Blood Pressure",
-    dataKey: "systolic",
-    unit: "mmHg",
-    yDomain: [80, 180],
-    thresholds: {
-      elevated: 120,
-      high: 140,
-    },
-    referenceLines: [
-      { value: 120, label: "Elevated", color: "#22c55e" },
-      { value: 140, label: "High", color: "#ef4444" },
-    ],
-  };
 
   useEffect(() => {
     let cancelled = false;
 
     async function fetchData() {
       try {
-        const res = await fetch(`${GET_SYS_DATA}${patientID}`);
+        const res = await fetch(`${apiURL}${patientID}`);
         if (!res.ok) throw new Error("Network error");
 
         const raw = await res.json();
 
         const formatted = Object.entries(raw)
-          .map(([date, value]) => ({ date, systolic: value }))
+          .map(([date, value]) => ({ date, [config.dataKey]: value }))
           .sort((a, b) => new Date(a.date) - new Date(b.date))
           .filter((v, i, arr) => i === 0 || arr[i - 1].date !== v.date);
 
@@ -72,7 +52,7 @@ export default function SystolicGraph() {
   if (loading) return <div style={{ color: "#94a3b8", fontFamily: "'Inter', sans-serif" }}>Loading...</div>;
   if (!data.length) return <div style={{ color: "#94a3b8", fontFamily: "'Inter', sans-serif" }}>No data available.</div>;
 
-  const values = data.map(d => d.systolic);
+  const values = data.map(d => d[config.dataKey]);
   const avg = Math.round(values.reduce((a, b) => a + b, 0) / values.length);
   const max = Math.max(...values);
   const min = Math.min(...values);
@@ -188,7 +168,7 @@ export default function SystolicGraph() {
             {/* Area under the line */}
             <Area
               type="monotone"
-              dataKey="systolic"
+              dataKey={config.dataKey}
               stroke="none"
               fill="url(#area-gradient)"
             />
@@ -196,7 +176,7 @@ export default function SystolicGraph() {
             {/* Smooth gradient line */}
             <Line
               type="monotone"
-              dataKey="systolic"
+              dataKey={config.dataKey}
               stroke="url(#line-gradient)"
               strokeWidth={3}
               dot={({ cx, cy, value }) => (
