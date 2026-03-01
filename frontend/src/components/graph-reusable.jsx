@@ -15,17 +15,39 @@ export default function ReusableGraph({patientID, apiURL, config}) {
 
     async function fetchData() {
       try {
-        const res = await fetch(`${apiURL}${patientID}`);
-        if (!res.ok) throw new Error("Network error");
+        // --- Fetch real data ---
+        const resReal = await fetch(`${apiURL}${patientID}`);
+        const rawReal = await resReal.json();
+        const realArray = Object.entries(rawReal)
+          .map(([date, value]) => ({ date, systolic: Number(value) })) // need to convert this to [config.dataKey] somehow
+          .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-        const raw = await res.json();
+        // Get the last real measurement
+        const lastRealEntry = realArray[realArray.length - 1];
 
-        const formatted = Object.entries(raw)
-          .map(([date, value]) => ({ date, [config.dataKey]: value }))
-          .sort((a, b) => new Date(a.date) - new Date(b.date))
-          .filter((v, i, arr) => i === 0 || arr[i - 1].date !== v.date);
+        // --- Fetch predicted data ---
+        const resPred = await fetch(PREDICT_SYS_DATA);
+        const rawPred = await resPred.json();
 
-        if (!cancelled) setData(formatted);
+        // Prepend last real entry to prediction
+        const predWithStart = { [lastRealEntry.date]: lastRealEntry.systolic, ...rawPred };
+
+        const predArray = Object.entries(predWithStart)
+          .map(([date, value]) => ({ date, systolic: Number(value) }))
+          .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        // --- Combine both arrays for chart ---
+        const allDates = Array.from(
+          new Set([...realArray, ...predArray].map(d => d.date))
+        ).sort((a, b) => new Date(a) - new Date(b));
+
+        const combined = allDates.map(date => {
+          const real = realArray.find(d => d.date === date)?.systolic ?? null;
+          const predicted = predArray.find(d => d.date === date)?.systolic ?? null;
+          return { date, real, predicted };
+        });
+
+        if (!cancelled) setData(combined);
       } catch (err) {
         console.error("Fetch error:", err);
         if (!cancelled) setData([]);
@@ -49,10 +71,10 @@ export default function ReusableGraph({patientID, apiURL, config}) {
     return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   };
 
-  if (loading) return <div style={{ color: "#94a3b8", fontFamily: "'Inter', sans-serif" }}>Loading...</div>;
-  if (!data.length) return <div style={{ color: "#94a3b8", fontFamily: "'Inter', sans-serif" }}>No data available.</div>;
+  if (loading) return <div style={{ color: "#94a3b8" }}>Loading...</div>;
+  if (!data.length) return <div style={{ color: "#94a3b8" }}>No data available.</div>;
 
-  const values = data.map(d => d[config.dataKey]);
+  const values = data.flatMap(d => [d.real, d.predicted].filter(Boolean));
   const avg = Math.round(values.reduce((a, b) => a + b, 0) / values.length);
   const max = Math.max(...values);
   const min = Math.min(...values);
@@ -63,76 +85,29 @@ export default function ReusableGraph({patientID, apiURL, config}) {
   }));
 
   return (
-    <div style={{
-      background: "#171718",
-      borderRadius: "12px",
-      padding: "40px 20px",
-      fontFamily: "'Inter', sans-serif",
-      width: "600px", // fixed width
-    }}>
-      <h1 style={{ color: "#c7c9ce", marginBottom: "20px", fontWeight: 600, letterSpacing: "0.5px" }}>
-        {config.title}
-      </h1>
-
-      {/* Stats */}
-      <div style={{ display: "flex", gap: "16px", marginBottom: "24px" }}>
-        {[
-          { label: "Average", value: avg, color: getColor(avg) },
-          { label: "Peak", value: max, color: "#ef4444" },
-          { label: "Lowest", value: min, color: "#38bdf8" }
-        ].map(stat => (
-          <div key={stat.label} style={{
-            flex: 1,
-            background: "#1b1c1f",
-            borderRadius: "12px",
-            border: "solid 1px #393c3f",
-            padding: "16px",
-            fontWeight: 500
-          }}>
-            <p style={{ color: "#c1c1c1", fontSize: "12px", textTransform: "uppercase" }}>{stat.label}</p>
-            <p style={{ color: stat.color, fontSize: "26px", margin: 0 }}>
-              {stat.value} <span style={{ fontSize: "12px", color: "#afafaf" }}>{config.unit}</span>
-            </p>
-          </div>
-        ))}
-      </div>
+    <div style={{ padding: "20px", fontFamily: "'Georgia', serif", background:'#0c0c0c', borderRadius: '12px', border: "solid 2px #1c1c1c"}}>
+      <h1 style={{ color: "#c6cacf", marginBottom: "20px" }}>{config.title}</h1>
 
       {/* Chart */}
-      <div style={{
-        background: "#1b1c1f",
-        border: "solid 1px #393c3f",
-        borderRadius: "16px",
-        padding: "20px"
-      }}>
+      <div style={{ background: "#1b1c1f", borderRadius: "16px", border: "solid 2px #2c2c2c", padding: "20px" }}>
         <ResponsiveContainer width="100%" height={320}>
           <LineChart data={formattedData}>
             <defs>
-              {/* Line gradient */}
               <linearGradient id="line-gradient" x1="0" y1="1" x2="0" y2="0">
                 <stop offset="0%" stopColor="#38bdf8" />
                 <stop offset="45%" stopColor="#22c55e" />
                 <stop offset="70%" stopColor="#ef4444" />
               </linearGradient>
 
-              {/* Area gradient */}
               <linearGradient id="area-gradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#38bdf8" stopOpacity={0.3} />
                 <stop offset="60%" stopColor="#22c55e" stopOpacity={0.3} />
                 <stop offset="100%" stopColor="#ef4444" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#38bdf8" stopOpacity={0} />
               </linearGradient>
             </defs>
 
-            <XAxis 
-              dataKey="displayDate" 
-              stroke="#afafaf" 
-              tick={{ fontFamily: "'Inter', sans-serif", fontSize: 12 }}
-            />
-            <YAxis 
-              domain={config.yDomain} 
-              stroke="#afafaf" 
-              tick={{ fontFamily: "'Inter', sans-serif", fontSize: 12 }}
-            />
+            <XAxis dataKey="displayDate" stroke="#475569" />
+            <YAxis domain={[80, 180]} stroke="#475569" />
             <Tooltip
               content={({ active, payload, label }) => {
                 if (active && payload?.length) {
@@ -142,8 +117,7 @@ export default function ReusableGraph({patientID, apiURL, config}) {
                     <div style={{
                       border: `1px solid ${color}`,
                       padding: "10px",
-                      borderRadius: "8px",
-                      fontFamily: "'Inter', sans-serif"
+                      borderRadius: "8px"
                     }}>
                       <p style={{ color: "#94a3b8", margin: 0 }}>{label}</p>
                       <p style={{ color, fontSize: "18px", margin: 0 }}>
@@ -157,39 +131,38 @@ export default function ReusableGraph({patientID, apiURL, config}) {
             />
 
             {config.referenceLines.map(ref => (
-              <ReferenceLine
-                key={ref.value}
-                y={ref.value}
-                stroke={ref.color}
-                strokeDasharray="4 4"
-              />
+              <ReferenceLine key={ref.value} y={ref.value} stroke={ref.color} strokeDasharray="4 4" />
             ))}
 
             {/* Area under the line */}
             <Area
               type="monotone"
-              dataKey={config.dataKey}
+              dataKey="real"
               stroke="none"
               fill="url(#area-gradient)"
             />
 
-            {/* Smooth gradient line */}
+            {/* Solid line for real data */}
             <Line
               type="monotone"
-              dataKey={config.dataKey}
+              dataKey="real"
               stroke="url(#line-gradient)"
               strokeWidth={3}
-              dot={({ cx, cy, value }) => (
-                <circle
-                  cx={cx}
-                  cy={cy}
-                  r={5}
-                  fill={getColor(value)}
-                  stroke="#1b1c1f"
-                  strokeWidth={2}
-                />
-              )}
+              dot={false}
+              isAnimationActive={false}
             />
+
+            {/* Dotted line for predicted data */}
+            <Line
+              type="monotone"
+              dataKey="predicted"
+              stroke="#a855f7"
+              strokeWidth={3}
+              dot={false}
+              isAnimationActive={false}
+              strokeDasharray="4 4"
+            />
+
           </LineChart>
         </ResponsiveContainer>
       </div>
