@@ -43,7 +43,8 @@ export default function PatientPage() {
 
   return (
     <div className="page-wrapper">
-      <header>
+
+      <header className="patient-header">
         {patient.name}
         {patient.age}
         {patient.weight}
@@ -54,7 +55,6 @@ export default function PatientPage() {
 
       </section>
     
-      
     </div>
   );
 }
