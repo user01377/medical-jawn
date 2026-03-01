@@ -35,8 +35,8 @@ def update_patient(user_id, systolic, diastolic, date):
 def main():
 
     rng = np.random.default_rng()
-    sys = rng.integers(90, 361, 20)
-    dia = rng.integers(50, 361, 20)
+    sys = rng.integers(100, 180, 20)
+    dia = rng.integers(70, 150, 20)
     year = 1987
     add_patient(name='Jamk Performative', age=35, weight=180, height=70)
     for i in range(len(sys)):

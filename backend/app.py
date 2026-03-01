@@ -25,3 +25,10 @@ def read_patient(user_id: int):
     if not patient:
         raise HTTPException(status_code=404, detail=f"Patient with ID {user_id} not found")
     return patient
+
+@app.get('/get-patient-sys-data/{user_id}')
+def read_sys_data(user_id: int):
+    data = endpoints.get_systolic(user_id)
+    if data is None or len(data) == 0:
+        raise HTTPException(status_code=404, detail=f"Entry with user id: {user_id} not found")
+    return data
