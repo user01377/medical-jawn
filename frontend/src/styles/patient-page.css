@@ -5,3 +5,10 @@
     padding: 15px;
     font-size: 30px;
 }
+
+.patient-graphs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
