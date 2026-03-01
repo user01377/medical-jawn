@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   LineChart, Line, Area, XAxis, YAxis,
   Tooltip, ReferenceLine, ResponsiveContainer,
 } from "recharts";
 
-const GET_SYS_DATA = "http://127.0.0.1:8000/get-patient-sys-data/795083948923837";
+const GET_SYS_DATA = "http://127.0.0.1:8000/get-patient-sys-data/";
 
 export default function SystolicGraph() {
+  const { patientURL } = useParams();
+  const patientID = patientURL.split("-")[0];
+  // console.log(patientID); // debugging
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,7 +35,7 @@ export default function SystolicGraph() {
 
     async function fetchData() {
       try {
-        const res = await fetch(GET_SYS_DATA);
+        const res = await fetch(`${GET_SYS_DATA}${patientID}`);
         if (!res.ok) throw new Error("Network error");
 
         const raw = await res.json();

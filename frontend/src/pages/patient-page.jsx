@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import ReusableGraph from "../components/graph-reusable.jsx"
 
 import "../styles/patient-page.css"
 
@@ -51,7 +52,7 @@ export default function PatientPage() {
       </header>
 
       <section className="patient-graphs">
-
+        <ReusableGraph />        
       </section>
     
     </div>
