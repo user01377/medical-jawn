@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ReusableGraph from "../components/graph-reusable.jsx"
+import AiTip from "../components/aiTips.jsx";
 
 import "../styles/patient-page.css"
 
@@ -101,6 +102,10 @@ export default function PatientPage() {
         />
 
       </section>
+
+      <footer>
+          <AiTip patientID={patientID}/>
+      </footer>
     
     </div>
   );

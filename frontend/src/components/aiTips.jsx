@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 
-const AVG_URL = "http://127.0.0.1:8000/get_bp_avg/";
+const AVG_URL = "http://127.0.0.1:8000/get-bp-avg/";
 
-export default function aiTip() {
+export default function AiTip(patientID) {
   const [avg, setAvg] = useState(null);
 
   useEffect(() => {
     async function fetchPatients() {
       try {
-        const res = await fetch(AVG_URL);
+        const res = await fetch(`${AVG_URL}${patientID.patientID}`);
         if (!res.ok) throw new Error("Network error");
 
         const data = await res.json();
