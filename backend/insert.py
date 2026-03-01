@@ -6,6 +6,7 @@ def add_patient(user_id, name, age, weight, height):
 
     cursor.execute(f"INSERT INTO patient (user_id, name, age, weight, height) VALUES (?, ?, ?, ?, ?)", (user_id, name, age, weight, height))
     conn.commit()
+    conn.close()
 
 def add_blood_pressure(user_id, systolic, diastolic, cholesterol, date):
     conn = sqlite3.connect('blood.sqlite')
@@ -69,7 +70,13 @@ def main():
         ids2 = rng.integers(1, 99999)
         ids3 = rng.integers(1, 99999)
         idmain = int(f'{ids1}{ids2}{ids3}')
-        add_patient(user_id=idmain, name=names[i], age=age[i], weight=weight[i], height=height[i])
+        add_patient(
+            user_id=int(idmain),
+            name=names[i],
+            age=int(age[i]),
+            weight=int(weight[i]),
+            height=int(height[i])
+        )
         for j in range(len(sys)):
             update_patient(
                 user_id=idmain,
