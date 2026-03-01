@@ -39,3 +39,17 @@ def read_patient_cholesterol(user_id: int):
     if data is None or len(data) == 0:
         raise HTTPException(status_code=404, detail=f"Entry with user id: {user_id} not found")
     return data
+
+@app.get("/get-patient-bloodpressure/{user_id}") # both systolic and diastolic
+def read_patient_cholesterol(user_id: int):
+    data = endpoints.get_bloodpressure(user_id)
+    if data is None or len(data) == 0:
+        raise HTTPException(status_code=404, detail=f"Entry with user id: {user_id} not found")
+    return data
+
+@app.get("/get-patient-diastolic/{user_id}")
+def read_patient_diastolic(user_id: int):
+    data = endpoints.get_diastolic(user_id)
+    if data is None or len(data) == 0:
+        raise HTTPException(status_code=404, detail=f"Entry with user id: {user_id} not found")
+    return data
