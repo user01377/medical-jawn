@@ -26,10 +26,22 @@ def get_all_patients():
     cur = con.cursor()
 
     cur.execute('SELECT user_id, name FROM patient')
-    print(cur.fetchall())
+    results = cur.fetchall()
 
     con.close()
+    return results
 
+# returns single patient by id
+def get_patient(user_id):
+    con = sqlite3.connect('users.sqlite')
+    cur = con.cursor()
+
+    cur.execute(f'SELECT * FROM patient WHERE user_id = {user_id}')
+
+    results = cur.fetchone()
+
+    con.close()
+    return results
 
 # returns all bloodpressure data of patient
 def get_bloodpressure(user_id):
@@ -126,8 +138,8 @@ def get_diastolic_avg(user_id):
     return np.mean(vals)
 
 def main():
-    print(get_diastolic(2))
-    print(get_diastolic_avg(2))
+    print(get_all_patients())
+    print(get_patient(2))
 
 
 if __name__ == '__main__':
