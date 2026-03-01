@@ -1,38 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import "../styles/patient-page.css";
+import { useParams } from "react-router-dom";
 
-const GET_PATIENT_URL = "";
+const GET_PATIENT_URL = "http://127.0.0.1:8000/get-patient/"
+
+async function fetchPatient(id) {
+  try {
+    const res = await fetch(`${GET_PATIENT_URL}${id}`);
+    if (!res.ok) throw new Error("Network error");
+
+    const data = await res.json();
+  
+    const patient = {
+      id: data[0],
+      name: data[1],
+      age: data[2],
+      weight: data[3], // weight is lbs
+      height: data[4] // height is cm
+    };
+    return patient;
+  } catch (err) {
+    console.error("Fetch error:", err);
+    return null;
+  }
+}
 
 export default function PatientPage() {
-  const { id } = useParams();
-  const [patient, setPatient] = useState(null);
-
-  // hard coded data just like the home page
-  const patients = [
-    { id: 1, name: "John Doe", age: 30, condition: "Flu" },
-    { id: 2, name: "Jane Smith", age: 25, condition: "Cold" },
-    { id: 3, name: "Alice Johnson", age: 40, condition: "Allergy" },
-    { id: 4, name: "Bob Brown", age: 35, condition: "Checkup" },
-  ];
-
-  useEffect(() => {
-    // find patent by ID for now
-    const foundPatient = patients.find(
-      (p) => p.id === parseInt(id, 10)
-    );
-    setPatient(foundPatient);
-  }, [id]);
+    const [patient, setPatient] = useState([]); // use state so no breakie
+  
+    // fetch patient via their id once after component mounts
+    useEffect(() => {
+      fetchPatient().then(setPatient);
+    }, []);
 
   if (!patient) {
-    return (
-      <div className="page-wrapper">
-        <header>
-          <h1>Patient Not Found</h1>
-        </header>
-        <Link to="/">Back to Home</Link>
-      </div>
-    );
+    return <p>Loading patient info...</p>;
   }
 
   return (
@@ -41,11 +42,10 @@ export default function PatientPage() {
         <h1>{patient.name}</h1>
       </header>
 
-      <section className="patient-details">
-        <p><strong>Age:</strong> {patient.age}</p>
-        <p><strong>Condition:</strong> {patient.condition}</p>
-      </section>
+      <section className="patient-graph">
 
+      </section>
+    
       <Link to="/" className="back-link">Back to Home</Link>
     </div>
   );
