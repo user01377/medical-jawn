@@ -1,32 +1,56 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/index-page.css";
 
-const GET_ALL_PATIENTS_URL = "";
+const GET_ALL_PATIENTS_URL = "http://127.0.0.1:8000/all-patients";
 
-export default function IndexPage() { 
+// helper to conver the tuple from the backend into json
+function parseTuple(tupleData) {
+  return tupleData.map(tuple => ({
+    id: tuple[0],
+    name: tuple[1]
+  }));
+}
+
+// helper to fetch all patient data
+async function fetchPatients() {
+  try {
+    const res = await fetch(GET_ALL_PATIENTS_URL);
+    if (!res.ok) throw new Error("Network error");
+
+    const data = await res.json();
+    const patients = parseTuple(data); // uses the helper function above to convert the tuple into json
+    // console.log(patients); // debugging to console
+    return patients;
+  } catch (err) {
+    console.error("Fetch error:", err);
+    return [];
+  }
+}
+
+export default function IndexPage() {
+  const [patients, setPatients] = useState([]); // store fetched patients
   const [searchTerm, setSearchTerm] = useState("");
-  
-  // hard coded the patient list on the home page
-  const patients = [
-    { id: 1, name: "John Doe" },
-    { id: 2, name: "Jane Smith" },
-    { id: 3, name: "Alice Johnson" },
-    { id: 4, name: "Bob Brown" },
-  ];
 
-  // Filter patients based on search term (case-insensitive)
+  // fetch patients once after component mounts
+  useEffect(() => {
+    fetchPatients().then(setPatients);
+  }, []);
+  
+  // filter the patients based on the "contains" regex, is case insensitive
   const filteredPatients = patients.filter((patient) =>
     patient.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="page-wrapper">
+
       <header>
         <h1>Medical Jawn</h1>
       </header>
 
       <section className="info-center">
+
         <input
           className="search-box"
           type="search"
@@ -52,7 +76,9 @@ export default function IndexPage() {
             </p>
           )}
         </div>
+
       </section>
+
     </div>
   );
 }
