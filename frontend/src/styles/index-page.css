@@ -9,23 +9,9 @@
 body {
   background-color: #050810;
   color: #e8f4ff;
-  font-family: 'DM Mono', monospace;
+  font-family: 'roboto', monospace;
   min-height: 100vh;
   overflow-x: hidden;
-}
-
-/* ── BACKGROUND GRID (KEPT) ── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-image:
-    linear-gradient(rgba(0, 200, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 200, 255, 0.035) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
-  pointer-events: none;
 }
 
 /* ── PAGE WRAPPER ── */
@@ -47,7 +33,7 @@ header {
 }
 
 header h1 {
-  font-family: 'Syne', sans-serif;
+  font-family: 'arimo', sans-serif;
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 800;
   letter-spacing: -0.03em;
@@ -70,7 +56,7 @@ header h1 {
   border: 1px solid rgba(0, 200, 255, 0.25);
   border-radius: 6px;
   padding: 18px 20px;
-  font-family: 'DM Mono', monospace;
+  font-family: 'arimo', monospace;
   font-size: 14px;
   color: #00c8ff;
   letter-spacing: 0.06em;
