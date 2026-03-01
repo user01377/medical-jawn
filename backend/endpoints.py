@@ -138,7 +138,7 @@ def get_diastolic_avg(user_id):
     return np.mean(vals)
 
 def main():
-    print(get_systolic(2))
+    print(get_all_patients())
 
 
 if __name__ == '__main__':
