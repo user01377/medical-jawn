@@ -36,7 +36,7 @@ def get_patient(user_id):
     con = sqlite3.connect('users.sqlite')
     cur = con.cursor()
 
-    cur.execute(f'SELECT * FROM patient WHERE user_id = {user_id}')
+    cur.execute('SELECT * FROM patient WHERE user_id = ?', (user_id,))
 
     results = cur.fetchone()
 

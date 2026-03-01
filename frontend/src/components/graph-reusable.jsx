@@ -132,7 +132,12 @@ export default function ReusableGraph({patientID, apiURL, config}) {
   
             <XAxis dataKey="displayDate" stroke="#475569" />
             <YAxis domain={config.yDomain} stroke="#475569" />
+<<<<<<< HEAD
   
+=======
+
+            {/* Area under the line */}
+>>>>>>> dev/main
             <Area
               type="monotone"
               dataKey={config.dataKey}

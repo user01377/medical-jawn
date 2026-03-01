@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import '../styles/AiTips.css'
 
 const AVG_URL = "http://127.0.0.1:8000/get-bp-avg/";
 
