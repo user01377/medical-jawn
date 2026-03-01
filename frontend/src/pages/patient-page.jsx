@@ -64,7 +64,8 @@ export default function PatientPage() {
             thresholds: { elevated: 120, high: 140 },
             referenceLines: [
               { value: 120, label: "Elevated", color: "#22c55e" },
-              { value: 140, label: "High", color: "#ef4444" },
+              { value: 130, label: "Stage 1 High", color: "#facc15" },
+              { value: 140, label: "Stage 2 High", color: "#ef4444" },
             ]
           }}
         />
@@ -76,11 +77,11 @@ export default function PatientPage() {
             title: "Diastolic Blood Pressure",
             dataKey: "diastolic",
             unit: "mmHg",
-            yDomain: [80, 180],
-            thresholds: { elevated: 120, high: 140 },
+            yDomain: [50, 110],
+            thresholds: { elevated: 80, high: 90 },
             referenceLines: [
-              { value: 120, label: "Elevated", color: "#22c55e" },
-              { value: 140, label: "High", color: "#ef4444" },
+              { value: 80, label: "Elevated", color: "#22c55e" },
+              { value: 90, label: "High", color: "#ef4444" },
             ]
           }}
         />
@@ -92,11 +93,11 @@ export default function PatientPage() {
             title: "Cholestrol Levels",
             dataKey: "cholesterol",
             unit: "mmHg",
-            yDomain: [80, 180],
-            thresholds: { elevated: 120, high: 140 },
+            yDomain: [100, 300],
+            thresholds: { elevated: 200, high: 240 },
             referenceLines: [
-              { value: 120, label: "Elevated", color: "#22c55e" },
-              { value: 140, label: "High", color: "#ef4444" },
+              { value: 200, label: "Elevated", color: "#22c55e" },
+              { value: 240, label: "High", color: "#ef4444" },
             ]
           }}
         />
