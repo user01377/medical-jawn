@@ -7,7 +7,6 @@
 
 /* ── BODY ── */
 body {
-  background-color: #050810;
   color: #e8f4ff;
   font-family: 'roboto', monospace;
   min-height: 100vh;
@@ -24,6 +23,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #050810;
 }
 
 /* ── HEADER ── */
