@@ -123,6 +123,7 @@ def get_diastolic(user_id):
     finally:
         con.close()
 
+
 # returns the average of a patients systolic levels
 def get_systolic_avg(user_id):
     sys = json.loads(get_systolic(user_id))
@@ -132,6 +133,12 @@ def get_systolic_avg(user_id):
 
 # returns the average of a patients diastolic levels
 def get_diastolic_avg(user_id):
+    dia = json.loads(get_diastolic(user_id))
+
+    vals = np.array(sorted(dict.values(dia)))
+    return np.mean(vals)
+
+def get_cholesterol_avg(user_id):
     dia = json.loads(get_diastolic(user_id))
 
     vals = np.array(sorted(dict.values(dia)))
