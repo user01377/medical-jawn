@@ -124,7 +124,7 @@ def get_diastolic(user_id):
     con = sqlite3.connect('blood.sqlite')
     cur = con.cursor()
 
-    systolic = dict()
+    diastolic_data = dict()
 
     try:
         query = '''
@@ -136,10 +136,10 @@ def get_diastolic(user_id):
         cur.execute(query, (user_id,))
         rows = cur.fetchall()
 
-        for date, sys_val in rows:
-            systolic[date] = sys_val
+        for date, diastolic_val in rows:
+            diastolic_data[date] = diastolic_val
 
-        return  json.dumps(systolic)
+        return diastolic_data
 
     except sqlite3.Error as e:
         print("Failed to get blood pressure:", e)
