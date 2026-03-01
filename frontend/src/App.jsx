@@ -38,7 +38,7 @@ function App() {
     // <Router>
     //   <Routes>
     //     {/* <Route path="/" element={<IndexPage />} />
-    //     <Route path="/patients/:id" element={<PatientsPage />} /> */}
+    //     <Route path="/patients/:patientURL" element={<PatientsPage />} />
     //   </Routes>
     // </Router>
    <ReusableGraph data={data} config={config} />
