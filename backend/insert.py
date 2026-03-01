@@ -64,11 +64,10 @@ def main():
     height = rng.integers(50, 80, 20)
     year = 1987
     for i in range(len(names)):
-        ids1 = rng.integers(1, 9999)
-        ids2 = rng.integers(1, 9999)
-        ids3 = rng.integers(1, 9999)
+        ids1 = rng.integers(1, 99999)
+        ids2 = rng.integers(1, 99999)
+        ids3 = rng.integers(1, 99999)
         idmain = int(f'{ids1}{ids2}{ids3}')
-        print(idmain)
         add_patient(user_id=idmain, name=names[i], age=age[i], weight=weight[i], height=height[i])
         for j in range(len(sys)):
             update_patient(
