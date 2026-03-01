@@ -85,7 +85,7 @@ def get_systolic(user_id):
         for date, sys_val in rows:
             systolic[date] = sys_val
 
-        return json.dumps(systolic)
+        return systolic
 
     except sqlite3.Error as e:
         print("Failed to get blood pressure:", e)
@@ -139,7 +139,6 @@ def get_diastolic_avg(user_id):
 
 def main():
     print(get_all_patients())
-    print(get_patient(2))
 
 
 if __name__ == '__main__':
