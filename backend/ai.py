@@ -42,7 +42,7 @@ def predict_diastolic(user_id):
 
     The person was age {age} years old, {weight} pounds, and {height} cm tall in {next(iter(dia_data))} (year-month-day).
     Predict the systolic blood pressure for the next 5 years assuming the trend continues. Return ONLY a JSON
-    dictionary mapping year in a yyyy-mm-dd sting format to predicted integer value. Do not include any explanation.
+    dictionary mapping year in a yyyy-mm-dd string format to predicted integer value. Do not include any explanation.
     """
 
     res = client.models.generate_content( model="gemini-2.5-flash", contents=prompt)
