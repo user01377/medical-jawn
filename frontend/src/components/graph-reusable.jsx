@@ -106,7 +106,7 @@ export default function ReusableGraph({patientID, apiURL, config}) {
       {/* Chart Container */}
       <div
         style={{
-          flex: 1, // 🔥 fills remaining space
+          flex: 1,
           background: "#1b1c1f",
           borderRadius: "16px",
           border: "2px solid #2c2c2c",
