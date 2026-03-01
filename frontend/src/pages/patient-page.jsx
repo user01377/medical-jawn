@@ -52,7 +52,54 @@ export default function PatientPage() {
       </header>
 
       <section className="patient-graphs">
-        <ReusableGraph />        
+        <ReusableGraph
+          patientID={patientID}
+          apiURL="http://127.0.0.1:8000/get-patient-sys-data/"
+          config={{
+            title: "Systolic Blood Pressure",
+            dataKey: "systolic",
+            unit: "mmHg",
+            yDomain: [80, 180],
+            thresholds: { elevated: 120, high: 140 },
+            referenceLines: [
+              { value: 120, label: "Elevated", color: "#22c55e" },
+              { value: 140, label: "High", color: "#ef4444" },
+            ]
+          }}
+        />
+
+        <ReusableGraph
+          patientID={patientID}
+          apiURL="http://127.0.0.1:8000/get-patient-diastolic/"
+          config={{
+            title: "Diastolic Blood Pressure",
+            dataKey: "diastolic",
+            unit: "mmHg",
+            yDomain: [80, 180],
+            thresholds: { elevated: 120, high: 140 },
+            referenceLines: [
+              { value: 120, label: "Elevated", color: "#22c55e" },
+              { value: 140, label: "High", color: "#ef4444" },
+            ]
+          }}
+        />
+
+        <ReusableGraph
+          patientID={patientID}
+          apiURL="http://127.0.0.1:8000/get-patient-cholesterol/"
+          config={{
+            title: "Cholestrol Levels",
+            dataKey: "cholesterol",
+            unit: "mmHg",
+            yDomain: [80, 180],
+            thresholds: { elevated: 120, high: 140 },
+            referenceLines: [
+              { value: 120, label: "Elevated", color: "#22c55e" },
+              { value: 140, label: "High", color: "#ef4444" },
+            ]
+          }}
+        />
+
       </section>
     
     </div>
