@@ -56,7 +56,10 @@ def get_cholesterol(user_id):
         '''
         cur.execute(query, (user_id,))
         row = cur.fetchall()
-        return row
+
+        # flips it into date, value for the frontend consistency
+        result = { date: cholesterol for cholesterol, date in row }
+        return result
 
     except sqlite3.Error as e:
         print("Failed to get cholesterol:", e)
