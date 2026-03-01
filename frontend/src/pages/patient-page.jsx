@@ -25,12 +25,17 @@ async function fetchPatient(id) {
 }
 
 export default function PatientPage() {
-    const [patient, setPatient] = useState([]); // use state so no breakie
-  
-    // fetch patient via their id once after component mounts
-    useEffect(() => {
-      fetchPatient().then(setPatient);
-    }, []);
+  // gets the patient id from the URL
+  const { patientURL } = useParams();
+  const patientID = patientURL.split("-")[0];
+  // console.log(patientID); // debugging
+
+  const [patient, setPatient] = useState([]); // use state so no breakie when page is rendered
+
+  // fetch patient via their id once after component mounts
+  useEffect(() => {
+    fetchPatient(patientID).then(setPatient);
+  }, []);
 
   if (!patient) {
     return <p>Loading patient info...</p>;
@@ -39,14 +44,17 @@ export default function PatientPage() {
   return (
     <div className="page-wrapper">
       <header>
-        <h1>{patient.name}</h1>
+        {patient.name}
+        {patient.age}
+        {patient.weight}
+        {patient.height}
       </header>
 
       <section className="patient-graph">
 
       </section>
     
-      <Link to="/" className="back-link">Back to Home</Link>
+      
     </div>
   );
 }
