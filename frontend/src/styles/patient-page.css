@@ -1,0 +1,7 @@
+.patient-header {
+    display: flex;
+    /* border: 2px solid hotpink; */
+    gap: 20px;
+    padding: 15px;
+    font-size: 30px;
+}

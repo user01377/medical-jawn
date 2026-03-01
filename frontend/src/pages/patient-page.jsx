@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
+import "../styles/patient-page.css"
+
 const GET_PATIENT_URL = "http://127.0.0.1:8000/get-patient/"
 
 async function fetchPatient(id) {
@@ -45,13 +47,10 @@ export default function PatientPage() {
     <div className="page-wrapper">
 
       <header className="patient-header">
-        {patient.name}
-        {patient.age}
-        {patient.weight}
-        {patient.height}
+        {`Name: ${patient.name} | Age: ${patient.age} | Weight: ${patient.weight} | Height: ${patient.height}`}
       </header>
 
-      <section className="patient-graph">
+      <section className="patient-graphs">
 
       </section>
     
