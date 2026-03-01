@@ -23,11 +23,6 @@ def predict_systolic(user_id):
     prompt = f"""You are a health data assistant. Here is the historical systolic blood pressure data for a person: {sys_data}. 
     The person was {age} years old, {weight} pounds, and {height} cm tall as of {next(iter(sys_data))}.
 
-<<<<<<< HEAD
-    The person was age {age} years old, {weight} pounds, and {height} cm tall in {next(iter(sys_data))} (year-month-day).
-    Predict the systolic blood pressure for the next 5 years assuming the trend continues. Return ONLY a JSON
-    dictionary mapping year in a yyyy-mm-dd string format to predicted integer value. Do not include any explanation.
-=======
     Predict the systolic blood pressure for the next 5 years assuming the trend continues. 
 
     **Return only a valid JSON dictionary** with the following rules:
@@ -36,7 +31,6 @@ def predict_systolic(user_id):
     - Do not include any duplicate keys.
     - Do not include any text, explanation, or code block markers.
     - Only return the JSON object.
->>>>>>> ai-graph
     """
 
     res = client.models.generate_content(
