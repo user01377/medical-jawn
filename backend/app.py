@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-import endpoints, ai
+import endpoints #, ai
+# ^^^^ UNCOMMENT THIS API IS ACTUALLY NEEDED
 import sqlite3
 import json
 
