@@ -1,5 +1,7 @@
 .tip-container{
-    background: #1b1c1f;
+    background: #0c0c0c;
     border-radius: 12px;
-    border: solid 2px #2c2c2c;
+    border: solid 2px #1c1c1c;
+    padding: 12px;
+    margin: 12px;
 }

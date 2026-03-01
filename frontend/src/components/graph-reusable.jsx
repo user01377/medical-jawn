@@ -110,25 +110,6 @@ export default function ReusableGraph({patientID, apiURL, config}) {
 
             <XAxis dataKey="displayDate" stroke="#475569" />
             <YAxis domain={config.yDomain} stroke="#475569" />
-            <Tooltip
-                content={({ active, payload, label }) => {
-                  if (!active || !payload?.length) return null;
-                  return (
-                    <div style={{ border: "1px solid #ccc", padding: "10px", borderRadius: "8px" }}>
-                      <p style={{ margin: 0 }}>{label}</p>
-                      {payload.map(p => (
-                        <p key={p.dataKey} style={{ color: getColor(p.value) }}>
-                          {p.dataKey}: {p.value} {config.unit}
-                        </p>
-                      ))}
-                    </div>
-                  );
-                }}
-              />
-
-            {config.referenceLines.map(ref => (
-              <ReferenceLine key={ref.value} y={ref.value} stroke={ref.color} strokeDasharray="4 4" />
-            ))}
 
             {/* Area under the line */}
             <Area

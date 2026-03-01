@@ -58,12 +58,12 @@ names = [
 
 def main():
     rng = np.random.default_rng()
-    sys = rng.integers(90, 361, 20)
-    dia = rng.integers(50, 361, 20)
+    sys = rng.integers(90, 200, 20)
+    dia = rng.integers(50, 150, 20)
     chl = rng.integers(150, 301, 20)
     age = rng.integers(18, 90, 20)
     weight = rng.integers(100, 300, 20)
-    height = rng.integers(50, 80, 20)
+    height = rng.integers(167, 190, 20)
     year = 1987
     for i in range(len(names)):
         ids1 = rng.integers(1, 99999)
