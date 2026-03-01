@@ -1,0 +1,19 @@
+.patient-header {
+    display: flex;
+    /* border: 2px solid hotpink; */
+    gap: 20px;
+    padding: 15px;
+    font-size: 30px;
+}
+
+.patient-graphs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+.patient-graphs > * {
+    flex: 1 1 500px;
+    max-width: 800px;
+}

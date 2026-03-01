@@ -25,6 +25,7 @@ cursor.execute('''
         user_id INTEGER,
         systolic INTEGER NOT NULL,
         diastolic INTEGER NOT NULL,
+        cholesterol INTEGER NOT NULL,
         "date" TEXT NOT NULL
     )
 ''')

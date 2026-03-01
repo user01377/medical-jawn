@@ -26,10 +26,47 @@ def get_all_patients():
     cur = con.cursor()
 
     cur.execute('SELECT user_id, name FROM patient')
-    print(cur.fetchall())
+    results = cur.fetchall()
 
     con.close()
+    return results
 
+# returns single patient by id
+def get_patient(user_id):
+    con = sqlite3.connect('users.sqlite')
+    cur = con.cursor()
+
+    cur.execute(f'SELECT * FROM patient WHERE user_id = {user_id}')
+
+    results = cur.fetchone()
+
+    con.close()
+    return results
+
+# returns all cholesterol data for patient
+def get_cholesterol(user_id):
+    con = sqlite3.connect('blood.sqlite')
+    cur = con.cursor()
+
+    try:
+        query = '''
+        SELECT cholesterol, date
+        FROM blood_pressure
+        WHERE user_id = ?
+        '''
+        cur.execute(query, (user_id,))
+        row = cur.fetchall()
+
+        # flips it into date, value for the frontend consistency
+        result = { date: cholesterol for cholesterol, date in row }
+        return result
+
+    except sqlite3.Error as e:
+        print("Failed to get cholesterol:", e)
+        return None
+
+    finally:
+        con.close()
 
 # returns all bloodpressure data of patient
 def get_bloodpressure(user_id):
@@ -73,7 +110,7 @@ def get_systolic(user_id):
         for date, sys_val in rows:
             systolic[date] = sys_val
 
-        return json.dumps(systolic)
+        return systolic
 
     except sqlite3.Error as e:
         print("Failed to get blood pressure:", e)
@@ -87,7 +124,7 @@ def get_diastolic(user_id):
     con = sqlite3.connect('blood.sqlite')
     cur = con.cursor()
 
-    systolic = dict()
+    diastolic_data = dict()
 
     try:
         query = '''
@@ -99,10 +136,10 @@ def get_diastolic(user_id):
         cur.execute(query, (user_id,))
         rows = cur.fetchall()
 
-        for date, sys_val in rows:
-            systolic[date] = sys_val
+        for date, diastolic_val in rows:
+            diastolic_data[date] = diastolic_val
 
-        return  json.dumps(systolic)
+        return diastolic_data
 
     except sqlite3.Error as e:
         print("Failed to get blood pressure:", e)
@@ -111,23 +148,29 @@ def get_diastolic(user_id):
     finally:
         con.close()
 
+
 # returns the average of a patients systolic levels
 def get_systolic_avg(user_id):
-    sys = json.loads(get_systolic(user_id))
+    sys = get_systolic(user_id)
 
-    vals = np.array(sorted(dict.values(sys)))
+    vals = np.array(list(sys.values()))
     return np.mean(vals)
 
 # returns the average of a patients diastolic levels
 def get_diastolic_avg(user_id):
-    dia = json.loads(get_diastolic(user_id))
+    dia = get_diastolic(user_id)
+
+    vals = np.array(list(dia.values()))
+    return np.mean(vals)
+
+def get_cholesterol_avg(user_id):
+    dia = get_diastolic(user_id)
 
     vals = np.array(sorted(dict.values(dia)))
     return np.mean(vals)
 
 def main():
-    print(get_diastolic(2))
-    print(get_diastolic_avg(2))
+    print(get_all_patients())
 
 
 if __name__ == '__main__':
