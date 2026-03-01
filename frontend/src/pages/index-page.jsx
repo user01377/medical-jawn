@@ -4,6 +4,12 @@ import "../styles/index-page.css";
 
 const GET_ALL_PATIENTS_URL = "http://127.0.0.1:8000/all-patients";
 
+// helper to convert the name into a more url readable link
+// /\s matches any whitespace char, + means consecutive, /g replaces all places where all the whitespace is
+function slugifyName(name) {
+  return name.toLowerCase().replace(/\s+/g, "-");
+}
+
 // helper to conver the tuple from the backend into json
 function parseTuple(tupleData) {
   return tupleData.map(tuple => ({
@@ -64,7 +70,7 @@ export default function IndexPage() {
             filteredPatients.map((patient) => (
               <Link
                 key={patient.id}
-                to={`/patients/${patient.id}`}
+                to={`/patients/${patient.id}-${slugifyName(patient.name)}`}
                 className="patient-link"
               >
                 {patient.name}
