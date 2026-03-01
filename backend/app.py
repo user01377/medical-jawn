@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 import endpoints
 import sqlite3
@@ -18,3 +18,10 @@ app.add_middleware(
 @app.get("/all-patients")
 def read_all_patients():
     return endpoints.get_all_patients()
+
+@app.get("/get-patient/{user_id}")
+def read_patient(user_id: int):
+    patient = endpoints.get_patient(user_id)
+    if not patient:
+        raise HTTPException(status_code=404, detail=f"Patient with ID {user_id} not found")
+    return patient
