@@ -87,12 +87,34 @@ export default function ReusableGraph({patientID, apiURL, config}) {
   }));
 
   return (
-    <div style={{ padding: "20px", fontFamily: "'Georgia', serif", background:'#0c0c0c', borderRadius: '12px', border: "solid 2px #1c1c1c"}}>
-      <h1 style={{ color: "#c6cacf", marginBottom: "20px" }}>{config.title}</h1>
-
-      {/* Chart */}
-      <div style={{ background: "#1b1c1f", borderRadius: "16px", border: "solid 2px #2c2c2c", padding: "20px" }}>
-        <ResponsiveContainer width="100%" height={320}>
+    <div
+      style={{
+        height: "480px",
+        display: "flex",
+        flexDirection: "column",
+        padding: "20px",
+        fontFamily: "'Georgia', serif",
+        background: "#0c0c0c",
+        borderRadius: "12px",
+        border: "2px solid #1c1c1c"
+      }}
+    >
+      <h1 style={{ color: "#c6cacf", marginBottom: "20px" }}>
+        {config.title}
+      </h1>
+  
+      {/* Chart Container */}
+      <div
+        style={{
+          flex: 1,
+          background: "#1b1c1f",
+          borderRadius: "16px",
+          border: "2px solid #2c2c2c",
+          padding: "20px",
+          display: "flex"
+        }}
+      >
+        <ResponsiveContainer width="100%" height="100%">
           <LineChart data={formattedData}>
             <defs>
               <linearGradient id="line-gradient" x1="0" y1="1" x2="0" y2="0">
@@ -100,14 +122,14 @@ export default function ReusableGraph({patientID, apiURL, config}) {
                 <stop offset="45%" stopColor="#22c55e" />
                 <stop offset="70%" stopColor="#ef4444" />
               </linearGradient>
-
+  
               <linearGradient id="area-gradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#38bdf8" stopOpacity={0.3} />
                 <stop offset="60%" stopColor="#22c55e" stopOpacity={0.3} />
                 <stop offset="100%" stopColor="#ef4444" stopOpacity={0.3} />
               </linearGradient>
             </defs>
-
+  
             <XAxis dataKey="displayDate" stroke="#475569" />
             <YAxis domain={config.yDomain} stroke="#475569" />
 
@@ -118,8 +140,7 @@ export default function ReusableGraph({patientID, apiURL, config}) {
               stroke="none"
               fill="url(#area-gradient)"
             />
-
-            {/* Solid line for real data */}
+  
             <Line
               type="monotone"
               dataKey={config.dataKey}
@@ -128,8 +149,7 @@ export default function ReusableGraph({patientID, apiURL, config}) {
               dot={false}
               isAnimationActive={false}
             />
-
-            {/* Dotted line for predicted data */}
+  
             <Line
               type="monotone"
               dataKey="predicted"
@@ -139,7 +159,6 @@ export default function ReusableGraph({patientID, apiURL, config}) {
               isAnimationActive={false}
               strokeDasharray="4 4"
             />
-
           </LineChart>
         </ResponsiveContainer>
       </div>
