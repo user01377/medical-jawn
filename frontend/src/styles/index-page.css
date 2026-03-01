@@ -1,0 +1,137 @@
+/* ── RESET ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ── BODY ── */
+body {
+  background-color: #050810;
+  color: #e8f4ff;
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── BACKGROUND GRID (KEPT) ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0, 200, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 200, 255, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  pointer-events: none;
+}
+
+/* ── PAGE WRAPPER ── */
+.page-wrapper {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  width: 100%;
+  padding: 40px 24px 60px; /* header closer to top */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── HEADER ── */
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+header h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+}
+
+/* ── INFO CENTER ── */
+.info-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* ── SEARCH BOX ── */
+.search-box {
+  width: 100%;
+  max-width: 600px;
+  background: rgba(2, 6, 18, 0.97);
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  border-radius: 6px;
+  padding: 18px 20px;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  color: #00c8ff;
+  letter-spacing: 0.06em;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.search-box::placeholder {
+  color: rgba(0, 200, 255, 0.25);
+}
+
+.search-box:focus {
+  border-color: #00c8ff;
+  box-shadow: 0 0 20px rgba(0, 200, 255, 0.15);
+}
+
+/* ── PATIENTS LIST (Below Search) ── */
+.patients-list {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── PATIENT LINKS ── */
+.patient-link {
+  display: block;
+  padding: 16px 20px;
+  background: rgba(0, 8, 20, 0.6);
+  border: 1px solid rgba(0, 200, 255, 0.08);
+  border-radius: 6px;
+  text-decoration: none;
+  color: #e8f4ff;
+  letter-spacing: 0.04em;
+  transition: all 0.2s ease;
+}
+
+.patient-link:hover {
+  background: rgba(0, 200, 255, 0.08);
+  border-color: rgba(0, 200, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+.patients-list {
+  width: 100%;
+  max-width: 800px; /* Wider than 600px search bar */
+  margin-top: 28px;
+  padding: 24px;
+  border-radius: 10px;
+
+  /* Clean glass panel background */
+  background: linear-gradient(
+    180deg,
+    rgba(0, 20, 40, 0.85),
+    rgba(0, 10, 25, 0.9)
+  );
+
+  border: 1px solid rgba(0, 200, 255, 0.12);
+  box-shadow:
+    0 0 0 1px rgba(0, 200, 255, 0.05),
+    0 20px 60px rgba(0, 0, 0, 0.6);
+}

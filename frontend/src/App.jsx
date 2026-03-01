@@ -1,11 +1,20 @@
-import './styles/App.css'
-import indexPage from './components/index-page';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import IndexPage from "./pages/index-page";
+import PatientsPage from "./pages/patient-page.jsx";
+import ReusableGraph from "./components/graph-reusable.jsx"
 
 function App() {
-
+    
   return (
-    indexPage()
-  )
+    // <Router>
+    //   <Routes>
+    //     {/* <Route path="/" element={<IndexPage />} />
+    //     <Route path="/patients/:patientURL" element={<PatientsPage />} />
+    //   </Routes>
+    // </Router>
+   <ReusableGraph/>
+  );
 }
 
-export default App
+export default App;
