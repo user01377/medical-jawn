@@ -32,3 +32,10 @@ def read_sys_data(user_id: int):
     if data is None or len(data) == 0:
         raise HTTPException(status_code=404, detail=f"Entry with user id: {user_id} not found")
     return data
+
+@app.get("/get-patient-cholesterol/{user_id}")
+def read_patient_cholesterol(user_id: int):
+    data = endpoints.get_cholesterol(user_id)
+    if data is None or len(data) == 0:
+        raise HTTPException(status_code=404, detail=f"Entry with user id: {user_id} not found")
+    return data

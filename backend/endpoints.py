@@ -43,6 +43,28 @@ def get_patient(user_id):
     con.close()
     return results
 
+# returns all cholesterol data for patient
+def get_cholesterol(user_id):
+    con = sqlite3.connect('blood.sqlite')
+    cur = con.cursor()
+
+    try:
+        query = '''
+        SELECT cholesterol, date
+        FROM blood_pressure
+        WHERE user_id = ?
+        '''
+        cur.execute(query, (user_id,))
+        row = cur.fetchall()
+        return row
+
+    except sqlite3.Error as e:
+        print("Failed to get cholesterol:", e)
+        return None
+
+    finally:
+        con.close()
+
 # returns all bloodpressure data of patient
 def get_bloodpressure(user_id):
     con = sqlite3.connect('blood.sqlite')
