@@ -55,10 +55,10 @@ def read_patient_diastolic(user_id: int):
         raise HTTPException(status_code=404, detail=f"Entry with user id: {user_id} not found")
     return data
 
-@app.get('/get_bp_avg/{user_id}')
+@app.get('/get-bp-avg/{user_id}')
 def get_bp_avg(user_id: int):
-    sys = int(endpoints.get_systolic_avg())
-    dia = int(endpoints.get_diastolic_avg())
+    sys = int(endpoints.get_systolic_avg(user_id))
+    dia = int(endpoints.get_diastolic_avg(user_id))
 
     avg = sys / dia
     if not avg:
