@@ -5,9 +5,19 @@ import {
   Tooltip, ReferenceLine, ResponsiveContainer,
 } from "recharts";
 
-const PREDICT_SYS_DATA = "http://localhost:8000/predict-patient-sys-data/"
 
 export default function ReusableGraph({patientID, apiURL, config}) {
+
+  let PREDICT_PRED_DATA;
+
+  if( config.dataKey == 'systolic'){
+    PREDICT_PRED_DATA = "http://localhost:8000/predict-patient-sys-data/";
+  } else if (config.dataKey == 'diastolic'){
+    PREDICT_PRED_DATA = "http://localhost:8000/predict-patient-dia-data/";  
+  } else {
+    PREDICT_PRED_DATA = "http://localhost:8000/predict-patient-chol-data/";
+  }
+
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +38,7 @@ export default function ReusableGraph({patientID, apiURL, config}) {
         const lastRealEntry = realArray[realArray.length - 1];
 
         // --- Fetch predicted data ---
-        const resPred = await fetch(`${PREDICT_SYS_DATA}${patientID}`);
+        const resPred = await fetch(`${PREDICT_PRED_DATA}${patientID}`);
         const rawPred = await resPred.json();
 
         // Prepend last real entry to prediction
@@ -132,8 +142,7 @@ export default function ReusableGraph({patientID, apiURL, config}) {
   
             <XAxis dataKey="displayDate" stroke="#475569" />
             <YAxis domain={config.yDomain} stroke="#475569" />
-
-            {/* Area under the line */}
+  
             <Area
               type="monotone"
               dataKey={config.dataKey}

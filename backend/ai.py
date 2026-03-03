@@ -104,6 +104,51 @@ def predict_diastolic(user_id):
         print("Failed to parse Gemini JSON:", text)
         return {}
 
+def predict_cholesterol(user_id):
+    patient = get_patient(user_id)
+    age = patient[2]
+    weight = patient[3]
+    height = patient[4]
+
+    sys_data = get_systolic(user_id)
+
+    prompt = f"""You are a health data assistant. Here is the historical cholesterol data for a person: {sys_data}. 
+    The person was {age} years old, {weight} pounds, and {height} cm tall as of {next(iter(sys_data))}.
+
+    Predict the cholesterol levels for the next 5 years assuming the trend continues. 
+
+    **Return only a valid JSON dictionary** with the following rules:
+    - Keys must be unique dates in yyyy-mm-dd format.
+    - Values must be integers.
+    - Do not include any duplicate keys.
+    - Do not include any text, explanation, or code block markers.
+    - Only return the JSON object.
+    """
+
+    res = client.models.generate_content(
+        model="gemini-3-flash-preview",
+        contents=prompt
+    )
+
+    text = res.text.strip()
+
+    text = re.sub(r'^```(?:json)?', '', text, flags=re.IGNORECASE)
+    text = re.sub(r'```$', '', text, flags=re.IGNORECASE)
+    text = text.strip()
+
+    try:
+        data_dict = json.loads(text)
+
+        # Ensure all values are integers
+        for k, v in data_dict.items():
+            data_dict[k] = int(v)
+
+        return data_dict
+
+    except json.JSONDecodeError:
+        # Log the text so you can debug what Gemini returned
+        print("Failed to parse Gemini JSON:", text)
+        return {}
 
 def main():
     pass

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-import endpoints #, ai
+import endpoints, ai
 # ^^^^ UNCOMMENT THIS API IS ACTUALLY NEEDED
 import sqlite3
 import json
@@ -69,42 +69,42 @@ def get_bp_avg(user_id: int):
 @app.get('/predict-patient-sys-data/{user_id}')
 def read_sys_data(user_id: int):
     
-    #raw_data = ai.predict_systolic(user_id) <-- uncomment on deployment
+    raw_data = ai.predict_systolic(user_id)
 
-    # if not raw_data:
-    #     raise HTTPException(
-    #         status_code=404,
-    #         detail=f"Predicted data for user id {user_id} not found"
-    #     )
+    if not raw_data:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Predicted data for user id {user_id} not found"
+        )
 
-    # # Ensure raw_data is a dict
-    # if not isinstance(raw_data, dict):
-    #     raise HTTPException(
-    #         status_code=500,
-    #         detail=f"Predicted data is not a dictionary: {raw_data}"
-    #     )
+    # Ensure raw_data is a dict
+    if not isinstance(raw_data, dict):
+        raise HTTPException(
+            status_code=500,
+            detail=f"Predicted data is not a dictionary: {raw_data}"
+        )
 
-    # try:
-    #     # Convert all values to integers
-    #     data_dict = {k: int(v) for k, v in raw_data.items()}
-    #     return data_dict
-    # except Exception as e:
-    #     raise HTTPException(
-    #         status_code=500,
-    #         detail=f"Failed to process predicted data: {e}"
-    #     )
-    return {
-    "2007-03-21": 159,
-    "2008-03-21": 157,
-    "2009-03-21": 155,
-    "2010-03-21": 153,
-    "2011-03-21": 151,
-}
+    try:
+        # Convert all values to integers
+        data_dict = {k: int(v) for k, v in raw_data.items()}
+        return data_dict
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to process predicted data: {e}"
+        )
+#     return {
+#     "2007-03-21": 159,
+#     "2008-03-21": 157,
+#     "2009-03-21": 155,
+#     "2010-03-21": 153,
+#     "2011-03-21": 151,
+# }
 
 @app.get('/predict-patient-dia-data/{user_id}')
 def read_sys_data(user_id: int):
     
-    #raw_data = ai.predict_diastolic(user_id) <-- uncomment on deployment
+    # raw_data = ai.predict_diastolic(user_id)
 
     # if not raw_data:
     #     raise HTTPException(
@@ -129,9 +129,44 @@ def read_sys_data(user_id: int):
     #         detail=f"Failed to process predicted data: {e}"
     #     )
     return {
-    "2007-03-21": 159,
-    "2008-03-21": 157,
-    "2009-03-21": 155,
-    "2010-03-21": 153,
-    "2011-03-21": 151,
+    "2007-03-21": 170,
+    "2008-03-21": 180,
+    "2009-03-21": 130,
+    "2010-03-21": 120,
+    "2011-03-21": 110,
+}
+
+@app.get('/predict-patient-chol-data/{user_id}')
+def read_sys_data(user_id: int):
+    
+#     raw_data = ai.predict_cholesterol(user_id)
+
+#     if not raw_data:
+#         raise HTTPException(
+#             status_code=404,
+#             detail=f"Predicted data for user id {user_id} not found"
+#         )
+
+#     # Ensure raw_data is a dict
+#     if not isinstance(raw_data, dict):
+#         raise HTTPException(
+#             status_code=500,
+#             detail=f"Predicted data is not a dictionary: {raw_data}"
+#         )
+
+#     try:
+#         # Convert all values to integers
+#         data_dict = {k: int(v) for k, v in raw_data.items()}
+#         return data_dict
+#     except Exception as e:
+#         raise HTTPException(
+#             status_code=500,
+#             detail=f"Failed to process predicted data: {e}"
+#         )
+    return {
+    "2007-03-21": 130,
+    "2008-03-21": 80,
+    "2009-03-21": 70,
+    "2010-03-21": 87,
+    "2011-03-21": 120,
 }
