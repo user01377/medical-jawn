@@ -17,7 +17,7 @@ def add_patient(patient_id, name, dob):
     con.commit()
     con.close()
 
-def add_record(patient_id, weight, height, systolic, diastolic, cholesterol, date):
+def add_record(patient_id, weight, height, date, systolic, diastolic, cholesterol):
     con = sqlite3.connect('patients.sqlite')
     cursor = con.cursor()
 
