@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 import json
 from google import genai
-from endpoints import get_diastolic,get_systolic, get_patient
+from backend.endpoints import get_diastolic,get_systolic, get_patient
 import re
 
 

@@ -2,41 +2,25 @@ import sqlite3
 import json
 import numpy as np
 
-# returns tuple of a full row in database
-def get_db_row(user_id, table, db_path):
-    con = sqlite3.connect(db_path)
-    cur = con.cursor()
 
-    try:
-        query = f"SELECT * FROM {table} WHERE user_id = ?"
-        cur.execute(query, (user_id,))
-        row = cur.fetchone()
-        return row
-
-    except sqlite3.Error as e:
-        print("Invalid DB query or connection failed:", e)
-        return None
-
-    finally:
-        con.close()
 
 # returns user IDs and names
 def get_all_patients():
-    con = sqlite3.connect('users.sqlite')
+    con = sqlite3.connect('database/patients.sqlite')
     cur = con.cursor()
 
-    cur.execute('SELECT user_id, name FROM patient')
+    cur.execute('SELECT patient_id, name FROM patient')
     results = cur.fetchall()
 
     con.close()
-    return results
+    return results[0]
 
 # returns single patient by id
-def get_patient(user_id):
-    con = sqlite3.connect('users.sqlite')
+def get_patient(patient_id):
+    con = sqlite3.connect('database/patients.sqlite')
     cur = con.cursor()
 
-    cur.execute('SELECT * FROM patient WHERE user_id = ?', (user_id,))
+    cur.execute('SELECT * FROM patient WHERE patient_id = ?', (patient_id,))
 
     results = cur.fetchone()
 
@@ -44,17 +28,17 @@ def get_patient(user_id):
     return results
 
 # returns all cholesterol data for patient
-def get_cholesterol(user_id):
-    con = sqlite3.connect('blood.sqlite')
+def get_cholesterol(patient_id):
+    con = sqlite3.connect('database/patients.sqlite')
     cur = con.cursor()
 
     try:
         query = '''
         SELECT cholesterol, date
-        FROM blood_pressure
-        WHERE user_id = ?
+        FROM records
+        WHERE patient_id = ?
         '''
-        cur.execute(query, (user_id,))
+        cur.execute(query, (patient_id,))
         row = cur.fetchall()
 
         # flips it into date, value for the frontend consistency
@@ -68,31 +52,9 @@ def get_cholesterol(user_id):
     finally:
         con.close()
 
-# returns all bloodpressure data of patient
-def get_bloodpressure(user_id):
-    con = sqlite3.connect('blood.sqlite')
-    cur = con.cursor()
-
-    try:
-        query = '''
-        SELECT systolic, diastolic, date
-        FROM blood_pressure
-        WHERE user_id = ?
-        '''
-        cur.execute(query, (user_id,))
-        row = cur.fetchall()
-        return row
-
-    except sqlite3.Error as e:
-        print("Failed to get blood pressure:", e)
-        return None
-
-    finally:
-        con.close()
-
-# returns json object for Systolic blood pressure
-def get_systolic(user_id):
-    con = sqlite3.connect('blood.sqlite')
+# returns dict for Systolic blood pressure
+def get_systolic(patient_id):
+    con = sqlite3.connect('database/patients.sqlite')
     cur = con.cursor()
 
     systolic = dict()
@@ -100,11 +62,11 @@ def get_systolic(user_id):
     try:
         query = '''
         SELECT date, systolic
-        FROM blood_pressure
-        WHERE user_id = ?
+        FROM records
+        WHERE patient_id = ?
         ORDER BY date
         '''
-        cur.execute(query, (user_id,))
+        cur.execute(query, (patient_id,))
         rows = cur.fetchall()
 
         for date, sys_val in rows:
@@ -119,9 +81,9 @@ def get_systolic(user_id):
     finally:
         con.close()
 
-# returns json object for Diastolic blood pressure
-def get_diastolic(user_id):
-    con = sqlite3.connect('blood.sqlite')
+# returns dict for Diastolic blood pressure
+def get_diastolic(patient_id):
+    con = sqlite3.connect('database/patients.sqlite')
     cur = con.cursor()
 
     diastolic_data = dict()
@@ -129,11 +91,11 @@ def get_diastolic(user_id):
     try:
         query = '''
         SELECT date, diastolic
-        FROM blood_pressure
-        WHERE user_id = ?
+        FROM records
+        WHERE patient_id = ?
         ORDER BY date
         '''
-        cur.execute(query, (user_id,))
+        cur.execute(query, (patient_id,))
         rows = cur.fetchall()
 
         for date, diastolic_val in rows:
@@ -148,29 +110,36 @@ def get_diastolic(user_id):
     finally:
         con.close()
 
-
 # returns the average of a patients systolic levels
-def get_systolic_avg(user_id):
-    sys = get_systolic(user_id)
+def get_systolic_avg(patient_id):
+    sys = get_systolic(patient_id)
 
     vals = np.array(list(sys.values()))
     return np.mean(vals)
 
 # returns the average of a patients diastolic levels
-def get_diastolic_avg(user_id):
-    dia = get_diastolic(user_id)
+def get_diastolic_avg(patient_id):
+    dia = get_diastolic(patient_id)
 
     vals = np.array(list(dia.values()))
     return np.mean(vals)
 
-def get_cholesterol_avg(user_id):
-    dia = get_diastolic(user_id)
+# returns the average of a patients cholesterol levels
+def get_cholesterol_avg(patient_id):
+    chol = get_cholesterol(patient_id)
 
-    vals = np.array(sorted(dict.values(dia)))
+    vals = np.array(sorted(dict.values(chol)))
     return np.mean(vals)
 
 def main():
     print(get_all_patients())
+    print(get_patient(0))
+    print(get_systolic(0))
+    print(get_diastolic(0))
+    print(get_cholesterol(0))
+    print(get_systolic_avg(0))
+    print(get_diastolic_avg(0))
+    print(get_cholesterol_avg(0))
 
 
 if __name__ == '__main__':
