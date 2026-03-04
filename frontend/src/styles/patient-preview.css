@@ -1,0 +1,25 @@
+.preview-container {
+    display: flex;
+    padding: 22px;
+    flex-direction: column;
+    justify-content: left;
+    border: solid 1px #868a91;
+    border-radius: 6px;
+    height: 300px;
+    overflow: hidden;
+    margin: 100px;
+    justify-self: center;
+    background: #f0f0f0;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+button {
+    width: 100px;
+    background: #011e3b;
+    transition: transform  0.5s ease-in-out;
+}
+
+button:hover {
+    background: #08396b;
+
+}

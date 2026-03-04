@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
+import PatientPreview from "../components/patient-preview";
 import "../styles/index-page.css";
 
 const GET_ALL_PATIENTS_URL = "http://127.0.0.1:8000/all-patients";
@@ -52,39 +53,43 @@ export default function IndexPage() {
     <div className="page-wrapper">
 
       <header>
-        <h1>Medical Jawn</h1>
+        <div className="heading">
+          <h1>Medical Jawn</h1>
+        </div>
       </header>
 
-      <section className="info-center">
+      <div className="info-container">
+        <section className="info-center">
+          <input
+            className="search-box"
+            type="search"
+            placeholder="Search For A Patient"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
 
-        <input
-          className="search-box"
-          type="search"
-          placeholder="Search For A Patient"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-
-        <div className="patients-list">
-          {filteredPatients.length > 0 ? (
-            filteredPatients.map((patient) => (
-              <Link
-                key={patient.id}
-                to={`/patients/${patient.id}-${slugifyName(patient.name)}`}
-                className="patient-link"
-              >
-                {patient.name}
-              </Link>
-            ))
-          ) : (
-            <p style={{ color: "#00c8ff", padding: "12px" }}>
-              No patients found.
-            </p>
-          )}
+          <div className="patients-list">
+            {filteredPatients.length > 0 ? (
+              filteredPatients.map((patient) => (
+                <Link
+                  key={patient.id}
+                  to={`/patients/${patient.id}-${slugifyName(patient.name)}`}
+                  className="patient-link"
+                >
+                  {patient.name}
+                </Link>
+              ))
+            ) : (
+              <p style={{ color: "#3e3e3e", padding: "12px", alignSelf: "center" }}>
+                No patients found
+              </p>
+            )}
+          </div>
+        </section>
+        <div className="view-port">
+          <PatientPreview/>
         </div>
-
-      </section>
-
+      </div>
     </div>
   );
 }
